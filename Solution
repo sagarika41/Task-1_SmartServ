@@ -1,0 +1,49 @@
+import com.android.volley.Request
+import com.android.volley.toolbox.JsonObjectRequest
+import org.json.JSONArray  
+import org.json.JSONObject
+
+class MainActivity : AppCompatActivity() {    
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+       
+         fetchData()
+}
+
+private fun fetchData(){
+        val url = "https://s3.amazonaws.com/open-to-cors/assignment.json"
+        val jsonObjectRequest =object: JsonObjectRequest(
+            Request.Method.GET, url, null,
+            {
+                val prodJsonArray = it.getJSONArray("products")
+                val prodArray = ArrayList<Prod>() //Prod is a Kotlin class
+                
+               // data class Prod (
+    //val title:String,
+    //val author:String,
+    //val url:String,
+    //val imageUrl:String
+       // )
+                for (i in 0 until newsJsonArray.length()) {
+                    val newsJsonObject = prodJsonArray.getJSONObject(i)
+                    val prod = Prod(
+                        prodJsonObject.getString("subcategory"),
+                        prodJsonObject.getString("title"),
+                        prodJsonObject.getString("price"),
+                        prodJsonObject.getString("popularity")
+                    )
+                    prodArray.add(prod)
+                }
+
+            },
+            {
+                Log.v("Failure", "Error")
+            }
+        )
+        display(prodArray)
+  }
+  private fun diplay(prodArray:ArrayList<Prod>){
+          for (i in prodArray ) {  
+              println(i)  
+    }
+  }
